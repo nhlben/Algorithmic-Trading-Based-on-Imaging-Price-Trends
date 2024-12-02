@@ -37,6 +37,27 @@ for predictive modeling. Our approach seeks to maximize the
 utility of CNNs and other advanced architectures in capturing
 nuanced price patterns for improved return forecasting
 
-## Method
+## Methodology
+
+### Plotting
+The following parameters are used for plotting:
+- <b>I</b> : Number of days of stock data used / time interval
+
+- <b>R</b> : Number of days after for calculating return / time interval of return
+
+Example: I=5, R=5: 5-days stock chart plot, compare the stock price the in last day with that of 5 days later.
+Example: I=5, R=20: 5-days stock chart plot, compare the stock price the in last day with that of 20 days later.
+
+
+
+The stocks are represented in OHLC chart in black and white, along with volume bars and a moving average line, as shown below
+<p align="center">
+  <img src="./examples/AEP_30.png" width="100"><br>
+  <em>Example of a 5-day stock image generated</em>
+</p>
+
+### Training
+
+### Backtesting
 
 ## Results
