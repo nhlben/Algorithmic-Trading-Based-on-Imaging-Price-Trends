@@ -20,6 +20,13 @@ aging CNNs, their study uncovered intricate return-predictive
 patterns that extended beyond traditional market phenomena,
 such as momentum and reversal effects.
 
+<center>
+<figure>
+  <img src="./figures/paper_result.png" width="500">
+  
+  <center><em>Result of J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends,</em></center>
+</figure>
+</center>
 # Main Idea
 The project advances the exploration of image-based stock
 price prediction by leveraging cutting-edge deep learning
