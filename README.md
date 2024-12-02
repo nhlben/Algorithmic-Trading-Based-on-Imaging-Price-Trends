@@ -38,6 +38,7 @@ utility of CNNs and other advanced architectures in capturing
 nuanced price patterns for improved return forecasting
 
 ## Methodology
+In this repository, due to confidentiality reasons, some of the codes are hidden intentionally. All the model weights are not uploaded also.
 
 ### Plotting
 The following parameters are used for plotting:
@@ -52,9 +53,22 @@ Example: I=5, R=20: 5-days stock chart plot, compare the stock price the in last
 
 The stocks are represented in OHLC chart in black and white, along with volume bars and a moving average line, as shown below
 <p align="center">
-  <img src="./examples/AEP_30.png" width="100"><br>
+  <img src="./examples/AEP_30.png" width="60"><br>
   <em>Example of a 5-day stock image generated</em>
 </p>
+
+Different chart type and indicators are also added and available.
+<p align="center">
+  <img src="./examples/AEP_30.png" width="60"><br>
+  <em>Example of a 5-day stock image generated</em>
+</p>
+
+After plotting, all the images will be classified as Positive and Negative, according to their return R days later.
+
+To plot and classify the images, run
+'
+'
+
 
 ### Training
 
