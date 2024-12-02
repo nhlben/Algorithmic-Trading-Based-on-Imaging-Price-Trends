@@ -58,20 +58,48 @@ The stocks are represented in OHLC chart in black and white, along with volume b
 </p>
 
 Different chart type and indicators are also added and available.
-<p align="center">
-  <img src="./examples/AEP_30.png" width="60"><br>
-  <em>Example of a 5-day stock image generated</em>
-</p>
+<div align="center">
 
+|<img src="./examples/AEP_40.png" width="60">|<img src="./examples/MMM_1120.png" width="80">|<img src="./examples/rsi.png" width="80">|
+|:-:|:-:|:-:|
+|Heikin Ashi Chart|MACD|RSI|
+
+</div>
 After plotting, all the images will be classified as Positive and Negative, according to their return R days later.
 
 To plot and classify the images, run
-'
-'
+
+`python plot.py`
+
+There are multiple argument parameters available.
+For example, to plot SSEC index stocks from 2001-01-01 to 2005-01-01 with I=20, R=20 and RSI indicator, run
+
+`python plot.py --I 20 --R 20 --start_date 2001-01-01 --end_date 2005-01-01 --indicator RSI`
 
 
 ### Training
 
+The image dataset is splitted with 70% training, 30% validation by default.
+The default CNN, DenseNet, EfficientNet and ViT are available for training. Notice that ViT resizes the image into square dimensions. The best model will be saved according to the save path.
+
+To train the images, run
+`python train.py`
+
+Similarly, there are multiple argument parameters available.
+For example, to train a DenseNet model with batch size of 256, learning rate of 1e-5 for 100 epochs, run
+
+`python plot.py --model DENSENET --batch_size 256 --learning_rate 1e-5 --num_epoch 100`
+
+Retraining a model from a certain `.pt` checkpoint is possible, one will have to specify the `model_path` parameter.
+
+The training result are available below:
+
+<p align="center">
+  <img src="./figures/model_trained.png" width="500"><br>
+  <img src="./figures/model_performance.png" width="500"><br>
+</p>
+
 ### Backtesting
 
+After training, the models are backtested, with the following two trading strategies
 ## Results
