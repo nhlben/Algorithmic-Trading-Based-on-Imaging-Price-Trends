@@ -4,9 +4,10 @@ The model achieves a high annualized return rate and Sharpe Ratio, and can be us
 
 The project is greatly inspired by the paper: 
 
-J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends,”
-The Journal of Finance, vol. 78, no. 6, pp. 3193–3249, 2023. [Online].
-Available: https://onlinelibrary.wiley.com/doi/abs/10.1111/jofi.13268
+<b>J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends,”
+The Journal of Finance, vol. 78, no. 6, pp. 3193–3249, 2023.</b>
+
+<b>Available: https://onlinelibrary.wiley.com/doi/abs/10.1111/jofi.13268</b>
 
 ## Introduction
 
@@ -25,7 +26,7 @@ such as momentum and reversal effects.
   <em>Result of J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends; MOM,STR,WSTR,TREND are traditional methods</em>
 </p>
 
-# Main Idea
+## Main Idea
 The project advances the exploration of image-based stock
 price prediction by leveraging cutting-edge deep learning
 architectures and introducing enhancements to data repre-
@@ -36,6 +37,6 @@ for predictive modeling. Our approach seeks to maximize the
 utility of CNNs and other advanced architectures in capturing
 nuanced price patterns for improved return forecasting
 
-# Method
+## Method
 
-# Results
+## Results
