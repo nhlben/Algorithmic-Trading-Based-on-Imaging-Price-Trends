@@ -1,4 +1,4 @@
-# Algorithmic-Trading-Based-on-Imaging-Price-Trends
+# Algorithmic Trading Based on Imaging Price Trends
 This is the project repository for DASC7600 Data Science Project: Algorithmic Trading Based on Imaging Price Trends. 
 The model achieves a high annualized return rate and Sharpe Ratio, and can be used in different markets.
 
