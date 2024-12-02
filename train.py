@@ -32,76 +32,7 @@ def train(model, num_epoch, loss_fn, optimizer, train_dataloader, val_dataloader
     train_accuracy_list = []
     val_accuracy_list = []
     min_val_loss = 10
-    for epoch in range(1, num_epoch+1):
-        train_loss, train_correct, val_loss, val_correct = 0, 0, 0, 0
-        # train
-        model.train()
-        for index, (data, label) in enumerate(train_dataloader):
-            data = data.to(device)
-            label = label.to(device)
-
-            # clean grad
-            optimizer.zero_grad()
-            # forward
-            output = model(data)
-            # calculate loss
-            loss = loss_fn(output, label)
-            # backward propagation
-            loss.backward()
-            # optimize
-            optimizer.step()
-            # record train loss
-            train_loss += loss.item()
-            # record correct identified label
-            train_correct += (output.argmax(1) == label).sum()
-
-        
-        # evaluate
-        model.eval()
-        with torch.no_grad():
-            for index, (data, label) in enumerate(val_dataloader):
-                data = data.to(device)
-                label = label.to(device)
-
-                # forward
-                output = model(data)
-                # calculate loss
-                loss = loss_fn(output, label)
-                # record val loss
-                val_loss += loss.item()
-                # record correct identified label
-                val_correct += (output.argmax(1) == label).sum()
-
-        # Calculate average loss
-        train_loss = train_loss/len(train_dataloader.sampler)
-        train_loss_list.append(train_loss)
-        
-        train_accuracy = train_correct/len(train_dataloader.sampler)
-        train_accuracy_list.append(train_accuracy.item())
-
-        val_loss = val_loss/len(val_dataloader.sampler)
-        if val_loss < min_val_loss:
-            min_val_loss = val_loss
-            best_model = model
-        val_loss_list.append(val_loss)
-        val_accuracy = val_correct/len(val_dataloader.sampler)
-        val_accuracy_list.append(val_accuracy.item())
-
-        # print epoch info
-        print(f"Epoch {epoch} / {num_epoch}:   Training Loss: {train_loss:.6f}   Training Accuracy: {train_accuracy:.4f}  Validation Loss: {val_loss:.6f}   Validation Accuracy: {val_accuracy:.4f} "
-              , flush=True)
-
-        # Early Stopper if val loss is not improved
-        if early_stopper.early_stop(val_loss):  
-            os.makedirs(save_path, exist_ok=True)
-            print(f"The training is stopped early for no improvement in validation loss", flush=True) 
-            print(f"The best model is saved at {save_path}", flush=True)
-            torch.save(best_model, f"{save_path}/model.pt")
-            return train_loss_list, train_accuracy_list, val_loss_list, val_accuracy_list, epoch
-
-    os.makedirs(save_path, exist_ok=True)
-    torch.save(best_model, f"{save_path}/model.pt")
-    print(f"The best model is saved at {save_path}", flush=True)
+    # hidden
     return train_loss_list, train_accuracy_list, val_loss_list, val_accuracy_list, epoch
 
 if __name__ == '__main__':

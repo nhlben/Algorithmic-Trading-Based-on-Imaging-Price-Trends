@@ -26,68 +26,7 @@ def backtest(stock_data, strategy, time_interval, rolling_window, trade_interval
     log = ""
     data_len = len(list(stock_data.values())[0].index)
 
-    while i < (data_len - (rolling_window + time_interval)):
-
-        if strategy == "longonly":
-            # buy the stock randomly
-            ticker_list = list(stock_data.keys())
-            random_choice = np.random.choice(ticker_list, num_trade) # randomly choosing stocks
-            for j in range(num_trade):
-                trade_data = stock_data[random_choice[j]].iloc[i+time_interval-1 : i + time_interval + rolling_window]   
-                trade_ticker = ticker_list[j]
-                buy_price = trade_data.iloc[0]['Close']
-
-                # buy the stocks
-                print(f"Buy {trade_ticker}: {trade_data.index[0]}, Price: {buy_price:.2f}", flush=True)
-                log += f"Buy {trade_ticker}: {trade_data.index[0]}, Price: {buy_price:.2f}\n"
-                trades.append({'action': 'buy', 'ticker': trade_ticker, 'price': buy_price, 'date': trade_data.index[0]})
-                sell_price = trade_data.iloc[-1]['Close']
-
-                #sell the stocks after R days
-                print(f"Sell {trade_ticker}: {trade_data.index[-1]}, Price: {sell_price:.2f}", flush=True)
-                log += f"Sell {trade_ticker}: {trade_data.index[-1]}, Price: {sell_price:.2f}\n"
-                trades.append({'action': 'sell', 'ticker': trade_ticker,'price': sell_price, 'date': trade_data.index[-1]})
-
-        elif strategy == "longandshort": 
-            ticker_list = list(stock_data.keys())
-            random_choice = np.random.choice(ticker_list, num_trade) # randomly choosing stocks
-            for j in range(num_trade // 2):  # five for short
-                trade_ticker_long = random_choice[j]
-                trade_data = stock_data[trade_ticker_long].iloc[i+time_interval-1 : i + time_interval + rolling_window]
-                buy_price = trade_data.iloc[0]['Close']
-                
-                # buy the stocks
-                print(f"Buy {trade_ticker_long}: {trade_data.index[0]}, Price: {buy_price:.2f}", flush=True)
-                log += f"Buy {trade_ticker_long}: {trade_data.index[0]}, Price: {buy_price:.2f}\n"
-                trades.append(
-                    {'action': 'buy', 'ticker': trade_ticker_long, 'price': buy_price, 'date': trade_data.index[0]})
-                sell_price = trade_data.iloc[-1]['Close']
-
-                # sell the stocks after R days
-                print(f"Sell {trade_ticker_long}: {trade_data.index[-1]}, Price: {sell_price:.2f}", flush=True)
-                log += f"Sell {trade_ticker_long}: {trade_data.index[-1]}, Price: {sell_price:.2f}\n"
-                trades.append(
-                    {'action': 'sell', 'ticker': trade_ticker_long, 'price': sell_price, 'date': trade_data.index[-1]})
-                
-            for j in range(-1, -(num_trade // 2 + 1), -1):  # bottom trade N/2 stocks
-                trade_ticker_short = random_choice[j]
-                trade_data = stock_data[trade_ticker_short].iloc[i+time_interval-1 : i + time_interval + rolling_window]
-                sell_price = trade_data.iloc[0]['Close']
-                
-                # short-sell the stocks
-                print(f"Sell {trade_ticker_short}: {trade_data.index[-1]}, Price: {sell_price:.2f}", flush=True)
-                log += f"Sell {trade_ticker_short}: {trade_data.index[-1]}, Price: {sell_price:.2f}\n"
-                trades.append(
-                    {'action': 'sell', 'ticker': trade_ticker_short, 'price': sell_price, 'date': trade_data.index[-1]})
-                buy_price = trade_data.iloc[-1]['Close']
-                
-                # buy to cover shorts
-                print(f"Buy {trade_ticker_short}: {trade_data.index[0]}, Price: {buy_price:.2f}", flush=True)
-                log += f"Buy {trade_ticker_short}: {trade_data.index[0]}, Price: {buy_price:.2f}\n"
-                trades.append(
-                    {'action': 'buy', 'ticker': trade_ticker_short, 'price': buy_price, 'date': trade_data.index[0]})
-
-        i += trade_interval
+    # hidden
 
     # Calcuate the return
     total_return = 0 # keep track of total return ($)
@@ -101,46 +40,8 @@ def backtest(stock_data, strategy, time_interval, rolling_window, trade_interval
     # capital used for trading a stock becomes I / (R / T) / N = I / F
 
     f = (rolling_window / trade_interval) * num_trade
-    if strategy == "longonly":
-        # calculate and save results
-        for i in range(1, len(trades), 2):
-            buy_trade = trades[i - 1]
-            sell_trade = trades[i]
-            buy_date.append(buy_trade['date'])
-            sell_date.append(sell_trade['date'])
-            buy_prices.append(buy_trade['price'])
-            sell_prices.append(sell_trade['price'])
-            return_rate.append(((sell_trade['price'] - buy_trade['price']) / buy_trade['price'] * 100) / f)
-            total_return_rate += return_rate[-1]
-            total_return_rates.append(total_return_rate)
-            return_value.append(
-                (sell_trade['price'] - buy_trade['price']) * (
-                        (initial_capital / f ) // buy_trade['price'])) 
 
-            total_return += return_value[-1]  # use a constant capital to buy stock
-            total_returns.append(total_return)
-    elif strategy == "longandshort":
-        # calculate and save results
-        for i in range(1, len(trades), 2):
-            if i % (num_trade * 2) < num_trade:
-                buy_trade = trades[i - 1]
-                sell_trade = trades[i]
-            else:
-                sell_trade = trades[i - 1]
-                buy_trade = trades[i]
-            buy_date.append(buy_trade['date'])
-            sell_date.append(sell_trade['date'])
-            buy_prices.append(buy_trade['price'])
-            sell_prices.append(sell_trade['price'])
-            return_rate.append(((sell_trade['price'] - buy_trade['price']) / buy_trade['price'] * 100) / f)
-            total_return_rate += return_rate[-1]
-            total_return_rates.append(total_return_rate)
-            return_value.append(
-                (sell_trade['price'] - buy_trade['price']) * (
-                        (initial_capital / f ) // buy_trade['price'])) 
-
-            total_return += return_value[-1]  # use a constant capital to buy stock
-            total_returns.append(total_return) 
+    # hidden
 
 
     results = ({

@@ -2,28 +2,8 @@ from __init__ import *
 
 
 def set_img_size(time_interval, indicator):
-    if time_interval==5:
-        px = 1/plt.rcParams['figure.dpi'] 
-        img_size = [30*px, 64*px]
-    elif time_interval==20:
-        px = 1/plt.rcParams['figure.dpi'] 
-        img_size = [128*px, 128*px]
-
-    indicators = indicator.split(",")
-    num_panels = len(indicators)
-    if "MA" in indicators:
-        num_panels -= 1
-    if "BB" in indicators:
-        num_panels -= 1
-    # TODO
-    if indicator=="MA,MACD":
-        px = 1/plt.rcParams['figure.dpi'] 
-        img_size = [60*px, 100*px]
-        
-    if indicator=="MA,BB":
-        px = 1/plt.rcParams['figure.dpi'] 
-        img_size = [60*px, 80*px]
-    return img_size
+    # hidden
+    pass
 
 def heikin_ashi(df):
     '''
@@ -86,135 +66,12 @@ def BBANDS(df, time_interval):
 
     
 def get_add_plot(data, indicator):
-    # TODO
-    indicators = indicator.split(",")
-    num_panels = len(indicators)
-    apdict = []
-    current_panel = 1
-    for ind in indicators:
-        if ind=="MA":
-            apdict.append(mpf.make_addplot(data["MA"], color="white", width=1, panel=0))
-        if ind=="MACD":
-            apdict.append(mpf.make_addplot((data['diff']), color='white', width=1, secondary_y=True, panel=current_panel+1))
-            apdict.append(mpf.make_addplot((np.zeros(len(data['diff']))), color='white', panel=2, width=1, secondary_y=True))
-            current_panel += 1
-        if ind=="BB":
-            apdict.append(mpf.make_addplot((data['upper']), color='white', width=1, secondary_y=False, panel=0))
-            apdict.append(mpf.make_addplot((data['lower']), color='white', width=1, secondary_y=False, panel=0))
-        if ind=="RSI":
-            apdict.append(mpf.make_addplot((data['rsi']), color='white', width=1, secondary_y=False, panel=current_panel+1))
-            current_panel += 1
-        if ind=="MFI":
-            apdict.append(mpf.make_addplot((data['mfi']), color='white', width=1, secondary_y=False, panel=current_panel+1))
-            current_panel += 1    
-        # TODO
-    return apdict, current_panel
+    # hidden
+    pass
 
 def draw_pic(stock_dataframe, chart_type, img_size, indicator):
-        mc = mpf.make_marketcolors(up='white',down='white',edge="white", ohlc="white", volume="white", inherit=True)
-        ms = mpf.make_mpf_style(
-            y_on_right=True,
-            marketcolors=mc,
-            edgecolor='black',
-            figcolor='black',
-            facecolor='black', 
-            gridcolor='black',
-            )
-        # MACD only
-
-        if indicator == "MACD_only":
-            apdict =[ mpf.make_addplot((stock_dataframe['diff']), color='white', width=1, secondary_y=False),
-                      mpf.make_addplot((np.zeros(len(stock_dataframe['diff']))), color='white', panel=0, width=1, secondary_y=False)
-                      ]
-            length = len(stock_dataframe)
-            o = [0.0]*length
-            h = [0.0]*length
-            l = [0.0]*length
-            c = [0.0]*length
-
-            df = pd.DataFrame(dict(Open=o,High=h,Low=l,Close=c))
-            df.index = stock_dataframe.index
-            img_buf = io.BytesIO()
-            mpf.plot(df, type='line',volume=False, figsize=(img_size[0], img_size[1]),
-                    style=ms, linecolor='black', addplot=apdict,axisoff=True, savefig=img_buf)
-            plt.savefig(img_buf, format='png')
-            # open image from buffer and convert into B&W directly
-            bw_im = Image.open(img_buf).convert("1", dither=Image.NONE)#.point(lambda x : 255 if x > 0 else 0, mode='1')
-            plt.close()
-            return bw_im
-        if chart_type=="ohlc": #ohlc chart
-            if indicator == "MA": # MA
-                fig = mpf.figure(style=ms ,figsize=(img_size[0], img_size[1]))
-
-                ax1 = fig.add_axes([0, 0.2, 1, 0.80])
-                ax2 = fig.add_axes([0, 0, 1, 0.2], sharex=ax1)
-                apdict = mpf.make_addplot(stock_dataframe["MA"], color="white", width=1, ax=ax1)
-                img_buf = io.BytesIO()
-                mpf.plot(stock_dataframe,
-                    ax=ax1,
-                    volume=ax2, tight_layout=True,
-                    style=ms, linecolor='white', addplot=apdict, type=chart_type, axisoff=True, update_width_config=dict(volume_width=0.3), savefig=img_buf)
-                plt.savefig(img_buf, format='png')
-
-            elif indicator=="NONE":
-                fig = mpf.figure(style=ms ,figsize=(img_size[0], img_size[1]))
-                ax1 = fig.add_axes([0, 0.2, 1, 0.80])
-                ax2 = fig.add_axes([0, 0, 1, 0.2], sharex=ax1)
-                mpf.plot(stock_dataframe,
-                    ax=ax1,
-                    volume=ax2, tight_layout=True,
-                    style=ms, linecolor='white', type=chart_type, axisoff=True, update_width_config=dict(volume_width=0.3)) 
-            #ax2.set_ylim(0, 0.01)
-            else: # MA5 and MACD
-                """
-                apdict =[mpf.make_addplot(stock_dataframe["MA5"], color="white", width=1),
-                         mpf.make_addplot((stock_dataframe['diff']), color='white', panel=2, width=1, secondary_y=True),
-                         mpf.make_addplot((np.zeros(len(stock_dataframe['diff']))), color='white', panel=2, width=1, secondary_y=True)]
-                """
-                apdict, num_panel = get_add_plot(stock_dataframe, indicator)
-                #print(num_panel)
-                #print(apdict)
-                img_buf = io.BytesIO()
-                if num_panel==1:
-                    mpf.plot(stock_dataframe, volume=True, tight_layout=False, figsize=(img_size[0], img_size[1]),
-                        style=ms, linecolor='white', addplot=apdict, type=chart_type, axisoff=True, update_width_config=dict(volume_width=0.3), savefig=img_buf)
-                elif num_panel==2:
-                    mpf.plot(stock_dataframe, volume=True,tight_layout=True, figsize=(img_size[0], img_size[1]), panel_ratios=(3,1,3),
-                        style=ms, linecolor='white', addplot=apdict, type=chart_type, axisoff=True, update_width_config=dict(volume_width=0.3), savefig=img_buf)
-                #plt.show()
-                #exit()
-        elif chart_type=="ha": # Heikin Ashi
-            fig = mpf.figure(style=ms ,figsize=(img_size[0], img_size[1]))
-
-            ax1 = fig.add_axes([0, 0.2, 1, 0.80])
-            ax2 = fig.add_axes([0, 0, 1, 0.2], sharex=ax1)
-            apdict = mpf.make_addplot(stock_dataframe["MA"], color="white", width=1, ax=ax1)
-            ha_df = heikin_ashi(stock_dataframe)
-            mpf.plot(ha_df, ax=ax1, volume=ax2, tight_layout=True,
-                    style=ms, linecolor='white', addplot=apdict, type="candle", axisoff=True, update_width_config=dict(volume_width=0.3), 
-                    columns=['HAOpen','HAHigh','HALow','HAClose','Volume'])
-            #plt.show()
-        elif chart_type=="candle": # candle stick
-            fig = mpf.figure(style=ms ,figsize=(img_size[0], img_size[1]))
-
-            ax1 = fig.add_axes([0, 0.2, 1, 0.80])
-            ax2 = fig.add_axes([0, 0, 1, 0.2], sharex=ax1)
-            apdict = mpf.make_addplot(stock_dataframe["MA"], color="white", width=1, ax=ax1)
-            mpf.plot(stock_dataframe,
-                    ax=ax1,
-                    volume=ax2, tight_layout=True,
-                    style=ms, linecolor='white', addplot=apdict, type=chart_type, axisoff=True, update_width_config=dict(volume_width=0.3))
-            #plt.show()
-            
-        # save plt figure to buffer
-        #if indicator!="MA,MACD":
-        #    img_buf = io.BytesIO()
-        #    plt.savefig(img_buf, format='png')
-
-        # open image from buffer and convert into B&W directly
-        bw_im = Image.open(img_buf).convert("1", dither=Image.NONE)#.point(lambda x : 255 if x > 0 else 0, mode='1')
-        plt.close()
-        return bw_im
+    # hidden
+    pass
 
 if __name__ == '__main__':
 
@@ -243,23 +100,12 @@ if __name__ == '__main__':
         folder2 = f"{opt.data_path}/Negative"
         os.makedirs(folder1, exist_ok=True)
         os.makedirs(folder2, exist_ok=True)
-    elif opt.num_classes==3:
-        folder1 = f"{opt.data_path}/Positive"
-        folder2 = f"{opt.data_path}/Negative"
-        folder3 = f"{opt.data_path}/Non-significant"
-        os.makedirs(folder1, exist_ok=True)
-        os.makedirs(folder2, exist_ok=True)
-        os.makedirs(folder3, exist_ok=True)
 
     # set image size
     img_size = set_img_size(time_interval, opt.indicator)
 
     if opt.stock=="SP500":
         ticker_list = pd.read_csv("SP500_constituents.csv")["Symbol"].to_list()
-    elif opt.stock=="NASDAQ":
-        ticker_list = pd.read_csv("filtered_NASDAQ.csv")["wind_code"].apply(lambda x: x.split(".")[0]).to_list()
-    elif opt.stock=="NYSE":
-        ticker_list = pd.read_csv("filtered_NYSE.csv")["wind_code"].apply(lambda x: x.split(".")[0]).to_list()
     # start and end date of data
     start = opt.start_date
     end = opt.end_date
@@ -298,8 +144,6 @@ if __name__ == '__main__':
                 print(f"{ticker}:{(i+1) // R} / {(data.shape[0]-2*R) // (R)}" , flush=True)
             #print(data)
             plotting_data = data.iloc[i:i + time_interval]
-            #plotting_data = plotting_data.apply(lambda x:(x-x.mean())/x.std()) #标准化
-            # 看R天后增减
             if opt.num_classes == 2:
                 if  close_price[i + R - 1] > close_price[i + R - 1 + R]: # compare close price between last day and R days later
                     # negative return
@@ -317,22 +161,17 @@ if __name__ == '__main__':
                 else:
                     # positive return
                     save_name = f"{opt.data_path}/Positive/{ticker}_{i+1}.png"                
-            #画图
             if os.path.exists(save_name):
                 i = i + R
                 count_data += 1
                 continue
                     
-            plotting_data.iloc[:, -2:-1] = plotting_data.iloc[:, -2:-1].apply(lambda x: x / x.std())  # Vol部分标准化
+            plotting_data.iloc[:, -2:-1] = plotting_data.iloc[:, -2:-1].apply(lambda x: x / x.std()) 
             image = draw_pic(plotting_data , opt.type, img_size, opt.indicator)
             image.save(save_name)
             count_data += 1
             i = i + R
-            #if count_data == 10000:
-            #    exit()
-            
-            # for debugging
-            #exit()
+
         print(f"{ticker} Completed", flush=True)
     print(f"Number of images plotted: {count_data}")
 

@@ -6,66 +6,9 @@ def plot_return(result_df, save_path, trade_interval, num_trade):
     interval = num_trade
     total_return_rates = [] # return rate
     index_return_rates = [] # return rate of the stock index used
+    # hidden
+    pass
 
-    # get first and last trading date
-    initial_date = result_df["buy_date"].to_numpy()[0].replace("/", "-") # replace / with - in the dates
-    last_date = result_df["sell_date"].to_numpy()[-1].replace("/", "-") # replace / with - in the dates
-
-    try:
-        stock = result_df["stock"].to_numpy()[0]
-        if stock=="SP500":
-            index_ticker = "^GSPC"
-        elif stock=="HSI":
-            index_ticker = "^HSI"
-        elif stock=="SHA":
-            index_ticker = "000001.SS"
-        elif stock=="NIKKEI":
-            index_ticker = "^N225"
-    except:
-        # if stock column is not available
-        stock = "SP500"
-        index_ticker = "^GSPC"
-
-
-    # get the value of the index
-    index = yf.download(index_ticker, initial_date, datetime.strftime(datetime.strptime(last_date, "%Y-%m-%d")  + timedelta(days=1), "%Y-%m-%d"), interval="1d")
-
-    initial_index_value = index["Adj Close"].to_numpy()[0]
-
-    # calculate total return and index return
-    for i in range(interval, len(result_df["total_return_rate"])+1, interval): # combine return within each interval
-        total_return_rates.append(result_df.iloc[i-1]["total_return_rate"])
-        date = result_df.iloc[i-1]["sell_date"].replace("/", "-") # replace / with - in the dates
-        try:
-            index_return_rates.append((index.loc[date]["Adj Close"]-initial_index_value) / initial_index_value * 100)
-        except KeyError:
-            date_before = result_df.iloc[i-1-interval]["sell_date"].replace("/", "-")
-
-            index_return_rates.append((index.loc[date_before]["Adj Close"] - initial_index_value) / initial_index_value * 100)
-
-    # plot portfolio return
-    plt.style.use('default')
-    plt.plot(np.arange(trade_interval, len(total_return_rates)*trade_interval+1, trade_interval), total_return_rates)
-    plt.title("Total Return Rate Over Time")
-    plt.xlabel("Number of Trading Days")
-    plt.ylabel("Total Return Rate (%)")
-    plt.savefig(f"{save_path}/return_rate.png")
-    #plt.show()
-    plt.close()
-
-    # plot return + index
-    plt.style.use('default')
-    plt.plot(np.arange(trade_interval, len(total_return_rates)*trade_interval+1, trade_interval), total_return_rates, label="Our Method")
-    plt.plot(np.arange(trade_interval, len(total_return_rates)*trade_interval+1, trade_interval), index_return_rates, label=f"{stock}")
-    plt.legend()
-    plt.title("Total Return Rate Over Time")
-    plt.xlabel("Number of Trading Days")
-    plt.ylabel("Total Return Rate (%)")
-    plt.savefig(f"{save_path}/return_rate_withindex.png")
-
-    plt.close()
-
-    return
 
 # calculate sharpe ratio
 def sharpe_ratio(total_return, num_trade, T):
