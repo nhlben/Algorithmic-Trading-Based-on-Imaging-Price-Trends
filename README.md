@@ -8,7 +8,7 @@ J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends,”
 The Journal of Finance, vol. 78, no. 6, pp. 3193–3249, 2023. [Online].
 Available: https://onlinelibrary.wiley.com/doi/abs/10.1111/jofi.13268
 
-# Introduction
+## Introduction
 
 The foundational inspiration for this study stems from
 the seminal work, (Re-)Imag(in)ing Price Trends by Jing-
@@ -20,13 +20,11 @@ aging CNNs, their study uncovered intricate return-predictive
 patterns that extended beyond traditional market phenomena,
 such as momentum and reversal effects.
 
-<center>
-<figure>
-  <img src="./figures/paper_result.png" width="500">
-  
-  <center><em>Result of J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends,</em></center>
-</figure>
-</center>
+<p align="center">
+  <img src="./figures/paper_result.png" width="800"><br>
+  <em>Result of J. JIANG, B. KELLY, and D. XIU, “(re-)imag(in)ing price trends; MOM,STR,WSTR,TREND are traditional methods</em>
+</p>
+
 # Main Idea
 The project advances the exploration of image-based stock
 price prediction by leveraging cutting-edge deep learning
