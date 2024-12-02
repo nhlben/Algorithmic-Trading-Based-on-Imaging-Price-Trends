@@ -49,7 +49,7 @@ The following parameters are used for plotting:
 Example: I=5, R=5: 5-days stock chart plot, compare the stock price the in last day with that of 5 days later.
 Example: I=5, R=20: 5-days stock chart plot, compare the stock price the in last day with that of 20 days later.
 
-
+The default setting used $I=5, R=5$.
 
 The stocks are represented in OHLC chart in black and white, along with volume bars and a moving average line, as shown below
 <p align="center">
@@ -79,7 +79,7 @@ For example, to plot SSEC index stocks from 2001-01-01 to 2005-01-01 with I=20, 
 
 ### Training
 
-The image dataset is splitted with 70% training, 30% validation by default.
+The image dataset is splitted with 70% training, 30% validation by default. The data are from 1993-01-01 to 2005-12-31.
 The default CNN, DenseNet, EfficientNet and ViT are available for training. Notice that ViT resizes the image into square dimensions. The best model will be saved according to the save path.
 
 To train the images, run
@@ -100,6 +100,69 @@ The training result are available below:
 </p>
 
 ### Backtesting
+The overall flow for the backtesting is as follow:
+<p align="center">
+  <img src="./figures/flow.png" width="500"><br>
+</p>
 
-After training, the models are backtested, with the following two trading strategies
+The following parameters are used for backtesting:
+- <b>N</b> : Number of stocks traded in one operation
+
+- <b>T</b> : Number of days between each trade / time interval of trading
+
+- <b>C</b> : Initial size of capital
+
+The default setting used $N=10, T=I=5, C=100000$ USD
+After training, the models are backtested, with the following two trading strategies :
+
+All the trades are equal weighted, each stock trade uses $\frac{C}{N}$ amount of money (equal weighted)
+
+- Long Only: Buy the top $N$ stocks with the highest probability, sell them after $R$ days. The trades happens every $T$ days.
+- Long and Short: Buy the top $\frac{N}{2}$ stocks with the highest probability, sell them after $R$ days. Short-selling the bottom $\frac{N}{2}$ stocks with the lowest probability, buy to cover the shorts after $R$ days. The trades happens every $T$ days.
+- Random: Performs the Long Only or Long and Short strategy with randomly selected stocks.
+
+The backtesting are performed within the period 2006-01-01 to 2015-12-31.
+
 ## Results
+
+The following shows the initial resuls to test the best backbone models:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/9ab4b26d-a7f0-4d1a-a309-59c1ef226d6a" width="500"><br>
+</p>
+
+With the above result, EffcientNet was chosen to be the backbone.
+
+All the settings are experimented to find the best combination:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8babb7d2-93e4-412f-8eaf-bff08f04916e" width="500"><br>
+</p>
+
+The best result for Long Only and Long and Short are both the I5R5 EfficientNet model, achieving a decent annualized return rate and Sharpe Ratio which surpasses the result of the paper.
+
+The following are the graph of return to better show the result.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/55a28d7c-dd1e-4c47-a7a3-82a880366f0b" width="500"><br>
+  <em>Result of I5R5 EfficientNet</em>
+</p>
+
+To ensure the fairness of the model, the random strategy are computed as well, with the following result:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f7c8d401-890a-4e86-9113-02744e8f6edb" width="500"><br>
+  <em>Comparison of I5R5 EfficientNet with Random</em>
+</p>
+
+Apart from the US market, the model is also backtested with the HSI, SSEC index, Nikkei 225 index, further proving its robustness.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f406d81c-22af-47d7-9aae-85929ab4a834" width="500"><br>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/301f19f8-4c5b-40fb-9f23-5e5bf9809fb0" width="500"><br>
+  <em>Result of I5R5 EffcientNet Long and Short on other markets</em>
+</p>
+
+
+
+
+
+
