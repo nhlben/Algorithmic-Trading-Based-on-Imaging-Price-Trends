@@ -239,7 +239,7 @@ if __name__ == "__main__":
         print(f"Average Trade Return Loss (%): {average_loss(result_df)}", flush=True)
         print(f"Profit Factor: {profit_factor(result_df)}", flush=True)
         print(f"Win Rate (%): {win_rate(result_df)}", flush=True)
-        print(f"Excess Return Rate (%): {excess_return(result_df)}", flush=True)
+        print(f"Annualized Excess Return Rate (%): {annualized_return(excess_return(result_df), num_trading_days)}", flush=True)
         plot_return(result_df, opt.save_path, trade_interval, num_trade)
         
     elif opt.mode=="all":
@@ -281,7 +281,7 @@ if __name__ == "__main__":
                 result_dict["Average Trade Return Loss (%)"] = average_loss(result_df)
                 result_dict["Profit Factor"] = profit_factor(result_df)
                 result_dict["Win Rate (%)"] = win_rate(result_df)
-                result_dict["Excess Return (%)"] = excess_return(result_df)
+                result_dict["Annualized Excess Return Rate (%)"] = annualized_return(excess_return(result_df), num_trading_days)
                 result_dict["Stock"] = stock
                 results.append(result_dict)
                 plot_return(result_df, f"{opt.save_path}/{dir}", trade_interval, num_trade)
