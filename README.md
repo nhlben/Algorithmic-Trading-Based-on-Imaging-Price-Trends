@@ -30,3 +30,7 @@ visualization techniques to enrich the feature space available
 for predictive modeling. Our approach seeks to maximize the
 utility of CNNs and other advanced architectures in capturing
 nuanced price patterns for improved return forecasting
+
+# Method
+
+# Results
