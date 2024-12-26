@@ -121,7 +121,7 @@ All the trades are equal weighted, each stock trade uses $\frac{C}{N}$ amount of
 - Long and Short: Buy the top $\frac{N}{2}$ stocks with the highest probability, sell them after $R$ days. Short-selling the bottom $\frac{N}{2}$ stocks with the lowest probability, buy to cover the shorts after $R$ days. The trades happens every $T$ days.
 - Random: Performs the Long Only or Long and Short strategy with randomly selected stocks.
 
-The backtesting are performed within the period 2006-01-01 to 2015-12-31.
+The backtesting are performed within the period 2006-01-01 to 2015-12-31. Also, the capital used for trading is <b>fixed</b> in the following results.
 
 ## Results
 
@@ -160,6 +160,21 @@ Apart from the US market, the model is also backtested with the HSI, SSEC index,
   <img src="https://github.com/user-attachments/assets/301f19f8-4c5b-40fb-9f23-5e5bf9809fb0" width="500"><br>
   <em>Result of I5R5 EffcientNet Long and Short on other markets</em>
 </p>
+
+## Further Improvement
+
+The capital are compounded, i.e. the return are accumulated as capital as well. The results are shown in below:
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/be0cda0d-59b7-4071-aa97-0af0d13ebab7" width="500"><br>
+  <em>Result of I5R5 EffcientNet Long and Short from 2006-2015 with compounded capital</em>
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/807d5861-1e23-4702-8fa9-6be2c6207249" width="500"><br>
+  <em>Result of I5R5 EffcientNet Long and Short  from 2006-2023 with compounded capital</em>
+</p>
+
+The model achieves an excellent result with a 24.6% annulaized return and 1.36 Sharpe Ratio from 2006-2015, while it obtains 27.79% and 0.89 from 2006-2023 respectively.
 
 
 
