@@ -174,7 +174,7 @@ The capital are compounded, i.e. the return are accumulated as capital as well. 
   <em>Result of I5R5 EffcientNet Long and Short  from 2006-2023 with compounded capital</em>
 </p>
 
-The model achieves an excellent result with a 24.6% annulaized return and 1.36 Sharpe Ratio from 2006-2015, while it obtains 27.79% and 0.89 from 2006-2023 respectively.
+The model achieves an excellent result with a 24.6% annualized return and 1.36 Sharpe Ratio from 2006-2015, while it obtains 27.79% and 0.89 from 2006-2023 respectively.
 
 
 
