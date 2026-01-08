@@ -20,7 +20,7 @@ def sharpe_ratio(total_return, num_trade, T):
     # assume an average annual risk-free rate over the period of 5%
     total_returns_diff  = total_returns_diff - 0.05/(252 / T)
 
-    sr = np.sqrt(252 / T) * (np.mean(total_returns_diff) / np.std(total_returns_diff))  # 252 trading days
+    sr = np.sqrt(252 / T) * (np.mean(total_returns_diff) / np.std(total_returns_diff, ddof=1))  # 252 trading days
     return sr
 
 def annualized_return(total_return_rate, num_trading_days):
