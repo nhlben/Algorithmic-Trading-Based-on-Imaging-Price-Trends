@@ -9,9 +9,6 @@ def plot_return(result_df, save_path, trade_interval, num_trade):
     # hidden
     pass
 
-import numpy as np
-
-import numpy as np
 
 # calculate sharpe ratio
 def sharpe_ratio(total_return, num_trade, T):
