@@ -11,35 +11,7 @@ def plot_return(result_df, save_path, trade_interval, num_trade):
 
 import numpy as np
 
-def calculate_sharpe_ratio(weekly_returns, risk_free_rate=0.0, weeks_per_year=52):
-    """
-    Calculate the annualized Sharpe Ratio for a strategy with weekly returns.
-    
-    Parameters:
-    - weekly_returns (list/array): Array of weekly returns (e.g., [0.01, -0.02, 0.03] for 1%, -2%, 3%).
-    - risk_free_rate (float): Annual risk-free rate (default: 0). Divide by 52 for weekly.
-    - weeks_per_year (int): Trading weeks in a year (default: 52).
-    
-    Returns:
-    - float: Annualized Sharpe Ratio.
-    """
-    weekly_returns = np.array(weekly_returns)
-    weekly_rf = risk_free_rate / weeks_per_year  # Weekly risk-free rate
-    
-    # Excess returns
-    excess_returns = weekly_returns - weekly_rf
-    
-    # Mean and std of excess returns
-    mean_excess_return = np.mean(excess_returns)
-    std_excess_return = np.std(excess_returns, ddof=1)  # Sample std
-    
-    # Weekly Sharpe ratio
-    weekly_sharpe = mean_excess_return / std_excess_return
-    
-    # Annualize
-    annualized_sharpe = weekly_sharpe * np.sqrt(weeks_per_year)
-    
-    return annualized_sharpe
+import numpy as np
 
 # calculate sharpe ratio
 def sharpe_ratio(total_return, num_trade, T):
